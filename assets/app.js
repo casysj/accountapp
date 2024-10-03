@@ -1,4 +1,6 @@
-import './bootstrap.js';
+import { createApp } from 'vue'
+import App from './components/App.vue'
+import router from './router'
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -6,5 +8,5 @@ import './bootstrap.js';
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
-
+createApp(App).use(router).mount('#app')
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

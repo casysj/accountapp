@@ -41,4 +41,14 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route('/api/login_check', name: 'api_login_check', methods: ['POST'])]
+    public function loginCheck()
+    {
+        $user = $this->getUser();
+        return $this->json([
+            'user'  => $user->getUserIdentifier(),
+            'roles' => $user->getRoles(),
+        ]);
+    }
 }

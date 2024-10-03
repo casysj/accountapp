@@ -8,6 +8,7 @@ use App\Repository\ExpenseRepository;
 use App\Repository\MonthlySettlementRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class SettlementService
 {
@@ -76,5 +77,30 @@ class SettlementService
     public function getMonthlySettlement(int $year, int $month): array
     {
         return $this->monthlySettlementRepository->findByYearAndMonth($year, $month);
+    }
+
+    public function getAllSettlements(int $page = 1, int $limit = 10): array
+    {
+        $query = $this->entityManager->createQuery(
+            'SELECT ms
+            FROM App\Entity\MonthlySettlement ms
+            ORDER BY ms.year DESC, ms.month DESC'
+        )
+        ->setFirstResult(($page - 1) * $limit)
+        ->setMaxResults($limit);
+
+        $paginator = new Paginator($query, $fetchJoinCollection = false);
+        $totalItems = count($paginator);
+        $totalPages = ceil($totalItems / $limit);
+
+        $settlements = iterator_to_array($paginator);
+
+        return [
+            'items' => $settlements,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalItems' => $totalItems,
+            'itemsPerPage' => $limit
+        ];
     }
 }

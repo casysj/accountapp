@@ -24,37 +24,37 @@ class ExpenseRepository extends ServiceEntityRepository
     /**
      * @return Expense[] Returns an array of Expense objects
      */
-    // public function findByUserAndMonth(int $userId, int $year, int $month): array
-    // {
-    //     $firstDayOfMonth = new \DateTime("$year-$month-01");
-    //     $lastDayOfMonth = (clone $firstDayOfMonth)->modify('last day of this month');
+    public function findByUserAndMonth(int $userId, int $year, int $month): array
+    {
+        $firstDayOfMonth = new \DateTime("$year-$month-01");
+        $lastDayOfMonth = (clone $firstDayOfMonth)->modify('last day of this month');
 
-    //     return $this->createQueryBuilder('e')
-    //         ->andWhere('e.user = :userId')
-    //         ->andWhere('e.date BETWEEN :firstDay AND :lastDay')
-    //         ->setParameter('userId', $userId)
-    //         ->setParameter('firstDay', $firstDayOfMonth)
-    //         ->setParameter('lastDay', $lastDayOfMonth)
-    //         ->orderBy('e.date', 'ASC')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.user = :userId')
+            ->andWhere('e.date BETWEEN :firstDay AND :lastDay')
+            ->setParameter('userId', $userId)
+            ->setParameter('firstDay', $firstDayOfMonth)
+            ->setParameter('lastDay', $lastDayOfMonth)
+            ->orderBy('e.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    // public function getTotalExpenseByUserAndMonth(int $userId, int $year, int $month): float
-    // {
-    //     $firstDayOfMonth = new \DateTime("$year-$month-01");
-    //     $lastDayOfMonth = (clone $firstDayOfMonth)->modify('last day of this month');
+    public function getTotalExpenseByUserAndMonth(int $userId, int $year, int $month): float
+    {
+        $firstDayOfMonth = new \DateTime("$year-$month-01");
+        $lastDayOfMonth = (clone $firstDayOfMonth)->modify('last day of this month');
 
-    //     $result = $this->createQueryBuilder('e')
-    //         ->select('SUM(e.amount) as total')
-    //         ->andWhere('e.user = :userId')
-    //         ->andWhere('e.date BETWEEN :firstDay AND :lastDay')
-    //         ->setParameter('userId', $userId)
-    //         ->setParameter('firstDay', $firstDayOfMonth)
-    //         ->setParameter('lastDay', $lastDayOfMonth)
-    //         ->getQuery()
-    //         ->getSingleScalarResult();
+        $result = $this->createQueryBuilder('e')
+            ->select('SUM(e.amount) as total')
+            ->andWhere('e.user = :userId')
+            ->andWhere('e.date BETWEEN :firstDay AND :lastDay')
+            ->setParameter('userId', $userId)
+            ->setParameter('firstDay', $firstDayOfMonth)
+            ->setParameter('lastDay', $lastDayOfMonth)
+            ->getQuery()
+            ->getSingleScalarResult();
 
-    //     return $result ?: 0.0;
-    // }
+        return $result ?: 0.0;
+    }
 }

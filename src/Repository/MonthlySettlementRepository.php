@@ -24,42 +24,42 @@ class MonthlySettlementRepository extends ServiceEntityRepository
     /**
      * @return MonthlySettlement[] Returns an array of MonthlySettlement objects
      */
-    // public function findByYearAndMonth(int $year, int $month): array
-    // {
-    //     return $this->createQueryBuilder('ms')
-    //         ->andWhere('ms.year = :year')
-    //         ->andWhere('ms.month = :month')
-    //         ->setParameter('year', $year)
-    //         ->setParameter('month', $month)
-    //         ->orderBy('ms.totalExpense', 'DESC')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
+    public function findByYearAndMonth(int $year, int $month): array
+    {
+        return $this->createQueryBuilder('ms')
+            ->andWhere('ms.year = :year')
+            ->andWhere('ms.month = :month')
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->orderBy('ms.totalExpense', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    // public function findOneByUserAndMonth(int $userId, int $year, int $month): ?MonthlySettlement
-    // {
-    //     return $this->createQueryBuilder('ms')
-    //         ->andWhere('ms.user = :userId')
-    //         ->andWhere('ms.year = :year')
-    //         ->andWhere('ms.month = :month')
-    //         ->setParameter('userId', $userId)
-    //         ->setParameter('year', $year)
-    //         ->setParameter('month', $month)
-    //         ->getQuery()
-    //         ->getOneOrNullResult();
-    // }
+    public function findOneByUserAndMonth(int $userId, int $year, int $month): ?MonthlySettlement
+    {
+        return $this->createQueryBuilder('ms')
+            ->andWhere('ms.user = :userId')
+            ->andWhere('ms.year = :year')
+            ->andWhere('ms.month = :month')
+            ->setParameter('userId', $userId)
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
-    // public function getTotalExpenseForMonth(int $year, int $month): float
-    // {
-    //     $result = $this->createQueryBuilder('ms')
-    //         ->select('SUM(ms.totalExpense) as total')
-    //         ->andWhere('ms.year = :year')
-    //         ->andWhere('ms.month = :month')
-    //         ->setParameter('year', $year)
-    //         ->setParameter('month', $month)
-    //         ->getQuery()
-    //         ->getSingleScalarResult();
+    public function getTotalExpenseForMonth(int $year, int $month): float
+    {
+        $result = $this->createQueryBuilder('ms')
+            ->select('SUM(ms.totalExpense) as total')
+            ->andWhere('ms.year = :year')
+            ->andWhere('ms.month = :month')
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->getQuery()
+            ->getSingleScalarResult();
 
-    //     return $result ?: 0.0;
-    // }
+        return $result ?: 0.0;
+    }
 }
