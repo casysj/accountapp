@@ -16,8 +16,9 @@
 
     <div v-if="currentSettlement" class="current-settlement">
       <h3>Current Settlement</h3>
-      <p>Total Expense: {{ currentSettlement.totalExpense }}</p>
-      <p>Your Balance: {{ currentSettlement.balance }}</p>
+      <p>총 지출: {{ currentSettlement.totalExpense }}</p>
+      <p v-if="currentSettlement.balance > 0">받아야할 돈: {{ currentSettlement.balance }}</p>
+      <p v-else>줘야할 돈: {{ currentSettlement.balance }}</p>
     </div>
 
     <div v-if="error" class="error">{{ error }}</div>
@@ -30,6 +31,7 @@
             <th>Date</th>
             <th>Total Expense</th>
             <th>Balance</th>
+            <th>User</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +39,7 @@
             <td>{{ item.year }}/{{ item.month }}</td>
             <td>{{ item.totalExpense }}</td>
             <td>{{ item.balance }}</td>
+            <td>{{ item.user.name }}</td>
           </tr>
         </tbody>
       </table>

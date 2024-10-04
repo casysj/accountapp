@@ -20,6 +20,17 @@ class ExpenseController extends AbstractController
         $this->expenseService = $expenseService;
     }
 
+    #[Route('', methods: ['GET'])]
+    public function listExpense(Request $request) : JsonResponse
+    {
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10);
+        
+        $user = $this->getUser();
+        $expenses = $this->expenseService->getAllExpenses($user, $page, $limit);
+        return $this->json($expenses, Response::HTTP_OK);
+    }
+
     #[Route('', methods: ['POST'])]
     public function addExpense(Request $request): JsonResponse
     {

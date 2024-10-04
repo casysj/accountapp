@@ -6,6 +6,7 @@ use App\Entity\Expense;
 use App\Entity\User;
 use App\Repository\ExpenseRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ExpenseService
 {
@@ -16,6 +17,33 @@ class ExpenseService
     {
         $this->entityManager = $entityManager;
         $this->expenseRepository = $expenseRepository;
+    }
+
+    public function getAllExpenses(User $user,int $page = 1, int $limit = 10): array
+    {
+        $query = $this->entityManager->createQuery(
+            'SELECT e
+            FROM App\Entity\Expense e
+            WHERE e.user = :user
+            ORDER BY e.createdAt DESC'
+        )
+        ->setParameter('user', $user)
+        ->setFirstResult(($page - 1) * $limit)
+        ->setMaxResults($limit);
+
+        $paginator = new Paginator($query, $fetchJoinCollection = false);
+        $totalItems = count($paginator);
+        $totalPages = ceil($totalItems / $limit);
+
+        $expenses = iterator_to_array($paginator);
+
+        return [
+            'items' => $expenses,
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'totalItems' => $totalItems,
+            'itemsPerPage' => $limit
+        ];
     }
 
     public function addExpense(User $user, float $amount, \DateTime $date, ?string $description): Expense
