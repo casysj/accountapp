@@ -7,6 +7,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+    .enablePostCssLoader()
     // .enableStimulusBridge('./assets/controllers.json')
     .enableVueLoader()
     // directory where compiled assets will be stored

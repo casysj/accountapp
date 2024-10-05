@@ -1,52 +1,60 @@
 <template>
-  <div class="settlement">
-    <h2>Settlement</h2>
+  <div class="settlement max-w-4xl mx-auto mt-10">
+    <h2 class="text-2xl font-bold mb-6">Settlement</h2>
     
-    <div class="date-selector">
-      <select v-model="selectedYear">
+    <div class="date-selector mb-6 flex items-center space-x-4">
+      <select v-model="selectedYear" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
       </select>
-      <select v-model="selectedMonth">
+      <select v-model="selectedMonth" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
       </select>
-      <button @click="calculateSettlement" :disabled="isLoading">Calculate Settlement</button>
+      <button @click="calculateSettlement" :disabled="isLoading" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50">
+        Calculate Settlement
+      </button>
     </div>
 
-    <div v-if="isLoading" class="loading">Loading...</div>
+    <div v-if="isLoading" class="text-center text-gray-500">Loading...</div>
 
-    <div v-if="currentSettlement" class="current-settlement">
-      <h3>Current Settlement</h3>
-      <p>총 지출: {{ currentSettlement.totalExpense }}</p>
-      <p v-if="currentSettlement.balance > 0">줘야할 돈: {{ Math.abs(currentSettlement.balance) }}</p>
-      <p v-else>받아야할 돈: {{ Math.abs(currentSettlement.balance) }}</p>
+    <div v-if="currentSettlement" class="current-settlement bg-white p-6 rounded-lg shadow-md mb-6">
+      <h3 class="text-xl font-semibold mb-4">Current Settlement</h3>
+      <p class="mb-2">총 지출: <span class="font-bold">{{ currentSettlement.totalExpense }}</span></p>
+      <p v-if="currentSettlement.balance > 0" class="text-red-600">줘야할 돈: <span class="font-bold">{{ Math.abs(currentSettlement.balance) }}</span></p>
+      <p v-else class="text-green-600">받아야할 돈: <span class="font-bold">{{ Math.abs(currentSettlement.balance) }}</span></p>
     </div>
 
-    <div v-if="error" class="error">{{ error }}</div>
+    <div v-if="error" class="mb-4 text-center text-red-600">{{ error }}</div>
 
     <div class="settlement-list" v-if="settlementHistory.length">
-      <h3>Settlement History</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Total Expense</th>
-            <th>Balance</th>
-            <th>User</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in settlementHistory" :key="item.id">
-            <td>{{ item.year }}/{{ item.month }}</td>
-            <td>{{ item.totalExpense }}</td>
-            <td>{{ item.balance }}</td>
-            <td>{{ item.user.name }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="pagination">
-        <button @click="fetchSettlementHistory(currentPage - 1)" :disabled="currentPage === 1">Previous</button>
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button @click="fetchSettlementHistory(currentPage + 1)" :disabled="currentPage === totalPages">Next</button>
+      <h3 class="text-xl font-semibold mb-4">Settlement History</h3>
+      <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Expense</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="item in settlementHistory" :key="item.id">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.year }}/{{ item.month }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.totalExpense }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.balance }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.user.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4 flex items-center justify-between">
+        <button @click="fetchSettlementHistory(currentPage - 1)" :disabled="currentPage === 1" class="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50">
+          Previous
+        </button>
+        <span class="text-sm text-gray-700">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button @click="fetchSettlementHistory(currentPage + 1)" :disabled="currentPage === totalPages" class="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50">
+          Next
+        </button>
       </div>
     </div>
   </div>
@@ -78,7 +86,6 @@ export default {
         const response = await axios.post(`/api/settlements/${this.selectedYear}/${this.selectedMonth}`, {}, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
-        console.log(response.data);
         this.currentSettlement = response.data[0];
         await this.fetchSettlementHistory();
       } catch (error) {
@@ -96,7 +103,6 @@ export default {
           params: { page, limit: 10 },
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
-        console.log(response.data.items);
         this.settlementHistory = response.data.items;
         this.currentPage = response.data.currentPage;
         this.totalPages = response.data.totalPages;
@@ -125,60 +131,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.settlement {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.date-selector {
-  margin-bottom: 20px;
-}
-
-select, button {
-  margin-right: 10px;
-  padding: 5px 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-.pagination {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.pagination button {
-  margin: 0 10px;
-}
-
-.loading, .error {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.error {
-  color: red;
-}
-
-.current-settlement {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-</style>
