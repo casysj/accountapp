@@ -17,8 +17,8 @@
     <div v-if="currentSettlement" class="current-settlement">
       <h3>Current Settlement</h3>
       <p>총 지출: {{ currentSettlement.totalExpense }}</p>
-      <p v-if="currentSettlement.balance > 0">받아야할 돈: {{ currentSettlement.balance }}</p>
-      <p v-else>줘야할 돈: {{ currentSettlement.balance }}</p>
+      <p v-if="currentSettlement.balance > 0">줘야할 돈: {{ Math.abs(currentSettlement.balance) }}</p>
+      <p v-else>받아야할 돈: {{ Math.abs(currentSettlement.balance) }}</p>
     </div>
 
     <div v-if="error" class="error">{{ error }}</div>

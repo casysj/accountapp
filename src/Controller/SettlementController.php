@@ -35,10 +35,11 @@ class SettlementController extends AbstractController
     #[Route('', methods: ['GET'])]
     public function getAllSettlements(Request $request): JsonResponse
     {
+        $user = $this->getUser();
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $settlements = $this->settlementService->getAllSettlements($page, $limit);
+        $settlements = $this->settlementService->getAllSettlements($page, $limit, $user);
         return $this->json($settlements);
     }
 }

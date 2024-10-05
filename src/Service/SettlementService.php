@@ -79,13 +79,15 @@ class SettlementService
         return $this->monthlySettlementRepository->findByYearAndMonth($year, $month);
     }
 
-    public function getAllSettlements(int $page = 1, int $limit = 10): array
+    public function getAllSettlements(int $page = 1, int $limit = 10, User $user): array
     {
         $query = $this->entityManager->createQuery(
             'SELECT ms
             FROM App\Entity\MonthlySettlement ms
+            WHERE ms.user = :user
             ORDER BY ms.year DESC, ms.month DESC'
         )
+        ->setParameter('user', $user)
         ->setFirstResult(($page - 1) * $limit)
         ->setMaxResults($limit);
 
