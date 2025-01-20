@@ -39,7 +39,7 @@ class SettlementController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 10);
 
-        $settlements = $this->settlementService->getAllSettlements($page, $limit, $user);
+        $settlements = $this->settlementService->getAllSettlements($user, $page, $limit);
         return $this->json($settlements);
     }
 }

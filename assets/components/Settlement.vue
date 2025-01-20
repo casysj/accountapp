@@ -19,8 +19,8 @@
     <div v-if="currentSettlement" class="current-settlement bg-white p-6 rounded-lg shadow-md mb-6">
       <h3 class="text-xl font-semibold mb-4">Current Settlement</h3>
       <p class="mb-2">총 지출: <span class="font-bold">{{ currentSettlement.totalExpense }}</span></p>
-      <p v-if="currentSettlement.balance > 0" class="text-red-600">줘야할 돈: <span class="font-bold">{{ Math.abs(currentSettlement.balance) }}</span></p>
-      <p v-else class="text-green-600">받아야할 돈: <span class="font-bold">{{ Math.abs(currentSettlement.balance) }}</span></p>
+      <p v-if="currentSettlement.balance > 0" class="text-red-600">줘야할 돈: <span class="font-bold">{{ Math.abs(currentSettlement.balance) }} €</span></p>
+      <p v-else class="text-green-600">받아야할 돈: <span class="font-bold">{{ Math.abs(currentSettlement.balance) }} €</span></p>
     </div>
 
     <div v-if="error" class="mb-4 text-center text-red-600">{{ error }}</div>
@@ -40,8 +40,8 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="item in settlementHistory" :key="item.id">
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.year }}/{{ item.month }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.totalExpense }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.balance }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.totalExpense }} €</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.balance }} €</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.user.name }}</td>
             </tr>
           </tbody>

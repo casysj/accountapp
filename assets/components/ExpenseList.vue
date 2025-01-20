@@ -14,7 +14,7 @@
         <tbody class="bg-white divide-y divide-gray-200">
           <tr v-for="expense in expenses" :key="expense.id">
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ expense.description }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ expense.amount }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ expense.amount }} €</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ new Date(expense.date).toLocaleDateString('de-DE') }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <button @click="deleteExpense(expense.id)" class="text-red-600 hover:text-red-900">Delete</button>

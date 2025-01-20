@@ -80,7 +80,7 @@ class SettlementService
         return $this->monthlySettlementRepository->findByYearAndMonth($year, $month);
     }
 
-    public function getAllSettlements(int $page = 1, int $limit = 10, User $user): array
+    public function getAllSettlements(User $user, int $page = 1, int $limit = 10): array
     {
         $query = $this->entityManager->createQuery(
             'SELECT ms
@@ -88,9 +88,9 @@ class SettlementService
             WHERE ms.user = :user
             ORDER BY ms.year DESC, ms.month DESC'
         )
-        ->setParameter('user', $user)
-        ->setFirstResult(($page - 1) * $limit)
-        ->setMaxResults($limit);
+            ->setParameter('user', $user)
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
 
         $paginator = new Paginator($query, $fetchJoinCollection = false);
         $totalItems = count($paginator);
