@@ -48,7 +48,7 @@ class SettlementService
             $balance = $averageExpense - $userExpenses[$user->getId()];
             $balance = round($balance, 2, PHP_ROUND_HALF_UP);
             $settlement = $this->createOrUpdateSettlement($user, $year, $month, $userExpenses[$user->getId()], $balance);
-            $settlements[] = $settlement;
+            $settlements[$user->getId()] = $settlement;
         }
 
         $this->entityManager->flush();

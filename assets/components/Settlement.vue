@@ -86,7 +86,7 @@ export default {
         const response = await axios.post(`/api/settlements/${this.selectedYear}/${this.selectedMonth}`, {}, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
-        this.currentSettlement = response.data[0];
+        this.currentSettlement = response.data;
         await this.fetchSettlementHistory();
       } catch (error) {
         console.error('Failed to calculate settlement', error);

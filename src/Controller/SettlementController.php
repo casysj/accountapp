@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\SettlementService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +23,9 @@ class SettlementController extends AbstractController
     public function calculateMonthlySettlement(int $year, int $month): JsonResponse
     {
         $settlements = $this->settlementService->calculateMonthlySettlement($year, $month);
-        return $this->json($settlements);
+        /** @var User $user */
+        $user = $this->getUser();
+        return $this->json($settlements[$user->getId()]);
     }
 
     #[Route('/{year}/{month}', methods: ['GET'])]
